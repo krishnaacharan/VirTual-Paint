@@ -3,7 +3,7 @@ import requests
 import numpy as np
 
 mycolors=[[24,55,53,100,255,255],[5,107,0,19,255,255],[133,56,0,159,155,255]]
-
+myPoints=[]
 mycolorvalues=[[255,0,255],[51,153,255],[0,255,0]]
 
 
@@ -15,7 +15,8 @@ mycolorvalues=[[255,0,255],[51,153,255],[0,255,0]]
 #cv2.createTrackbar("s_max","Trackbars",0,255,empty)
 #cv2.createTrackbar("v_min","Trackbars",0,255,empty)
 #cv2.createTrackbar("v_max","Trackbars",0,255,empty)
-myPoints=[]
+
+
 def drawCanvas(myPoints,mycolorvalues):
     for point in myPoints:
         cv2.circle(imgResult, (point[0], point[1]), 30, mycolorvalues[point[2]], cv2.FILLED)
@@ -43,9 +44,9 @@ def findColor(render,mycolors,mycolorvalues):
     #v_min = cv2.getTrackbarPos("v_min", "Trackbars")
     #v_max = cv2.getTrackbarPos("v_max", "Trackbars")
     for color in mycolors:
-        lower = np.array([mycolors[0:4]])
-        upper = np.array([mycolors[4:7]])
-        mask = cv2.inRange(imgHsv2, (24,55,53), (100,255,255))
+        lower = np.array(color[0:3])
+        upper = np.array(color[3:6])
+        mask = cv2.inRange(imgHsv2, lower, upper)
         imgRes = cv2.bitwise_and(render,render,mask=mask)
         x,y=getContours(mask)
         cv2.circle(imgResult, (x, y), 10, mycolorvalues[count], cv2.FILLED)
